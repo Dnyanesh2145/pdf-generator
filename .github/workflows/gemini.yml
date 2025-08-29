@@ -21,5 +21,5 @@ jobs:
       - name: Run Gemini CLI
         uses: google-github-actions/run-gemini-cli@v0
         with:
-          prompt: "/review" # 👈 what you want Gemini to do
+          prompt: "/review" # 
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
