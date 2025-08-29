@@ -1,0 +1,31 @@
+name: Gemini Assistant
+
+on:
+  # Trigger when someone comments on an issue/PR
+  issue_comment:
+    types: [created]
+  # Trigger when a PR is opened or updated
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  gemini:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Run Gemini CLI
+      - name: Run Gemini CLI
+        uses: google-github-actions/run-gemini-cli@v0
+        with:
+          # Default action: review PR
+          args: /review
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
