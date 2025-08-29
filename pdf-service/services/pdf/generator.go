@@ -2,6 +2,7 @@ package pdf
 
 import (
 	"bytes"
+	"fmt"
 	"text/template"
 
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
@@ -31,10 +32,12 @@ func (pdf *PdfService) RenderTemplate(html string, data any) ([]byte, error) {
 
 	tmp, err := template.New("client-template").Parse(html)
 	if err != nil {
+		fmt.Println("err", err)
 		return nil, err
 	}
 	var buf bytes.Buffer
 	if err := tmp.Execute(&buf, data); err != nil {
+		fmt.Println("err---->", err)
 		return nil, err
 	}
 

@@ -25,7 +25,7 @@ RUN dpkg -i wkhtmltox_0.12.6-1.focal_amd64.deb
 # Verify wkhtmltopdf installation
 RUN wkhtmltopdf --version
 # Stage 2: Build - Build the Go application
-FROM golang:1.21.6-alpine AS build
+FROM golang:1.24-alpine AS build
 # Switches to /app as the working directory, similar to 'cd'
 WORKDIR /app
 # If you have a go.mod and go.sum file in your project, uncomment lines 13, 14, 15
@@ -57,7 +57,7 @@ RUN sed -i 's|http://archive.ubuntu.com/ubuntu/|http://mirrors.kernel.org/ubuntu
 # Copy wkhtmltopdf from the base stage
 COPY --from=base /usr/local/bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf
 # Copy the Go application from the build stage
-COPY --from=build /app/out/motor-insurance-docker /app/motor-insurance-docker
+COPY --from=build /app/out/pdf-service /app/pdf-service
 # Switches working directory to /app
 WORKDIR "/app"
 # Copy necessary files

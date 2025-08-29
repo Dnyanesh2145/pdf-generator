@@ -3,6 +3,9 @@ package handler
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+
+	// "fmt"
 	"io"
 	"net/http"
 	"pdf-generator-service/services/pdf"
@@ -21,8 +24,8 @@ type PdfRequest struct {
 
 func (ctr *Contollers) GeneratePDFHandler(c *gin.Context) {
 	dataJson := c.PostForm("data")
-	var request PdfRequest
-	if err := json.Unmarshal([]byte(dataJson), &request.Data); err != nil {
+	var request map[string]any
+	if err := json.Unmarshal([]byte(dataJson), &request); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON in 'data' field"})
 		return
 	}
@@ -46,10 +49,14 @@ func (ctr *Contollers) GeneratePDFHandler(c *gin.Context) {
 		err      error
 		wg       sync.WaitGroup
 	)
+	// fmt.Println("html", len(html),html)
+	fmt.Println("data", request)
+	// var data map[string]any
+	// json.Unmarshal([]byte(dataJson))
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		tmpBytes, err = ctr.pdfService.RenderTemplate(html, request.Data)
+		tmpBytes, err = ctr.pdfService.RenderTemplate(html, request)
 		if err != nil {
 			return
 		}
